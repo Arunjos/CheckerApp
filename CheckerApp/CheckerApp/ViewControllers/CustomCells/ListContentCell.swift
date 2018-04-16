@@ -1,25 +1,25 @@
 //
-//  ListTitleCell.swift
+//  ListContentCell.swift
 //  CheckerApp
 //
-//  Created by user on 10/04/18.
+//  Created by user on 12/04/18.
 //  Copyright © 2018 Arun's Technologies. All rights reserved.
 //
 
 import UIKit
 
-class ListTitleCell: UITableViewCell {
+class ListContentCell: UITableViewCell {
 
-    @IBOutlet weak var bgView: UIView!
+    @IBOutlet weak var contentLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         let frame = contentView.frame
-        let frameInset = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(10, 10, 10, 10))
+        let frameInset = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(0, 10, 0, 10))
         contentView.frame = frameInset
     }
     
