@@ -29,4 +29,12 @@ class ListTitleCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setupCell(at indexPath:IndexPath, contentList:[UIColor]){
+        self.tag = indexPath.row
+        self.selectionStyle = .none
+        self.contentView.layer.borderColor = UIColor.black.cgColor
+        self.contentView.layer.borderWidth = 1.0
+        self.bgView.backgroundColor = contentList[indexPath.row]
+    }
+    
 }

@@ -9,23 +9,31 @@
 import UIKit
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    //MARK: properties
-    @IBOutlet weak var listTableView: UITableView!
+    
+    //MARK: Properties
+    @IBOutlet weak var listTitleTableView: AnimatedTableView!
     let cellReuseIdentifier = "TitleCell"
+    @IBOutlet weak var titleTableViewTopCon: NSLayoutConstraint!
+    var titleList = [UIColor]()
+    
     var selectedIndex = -1
     var selectedHeaderY:CGFloat = 0
-    @IBOutlet weak var listTableViewTopCon: NSLayoutConstraint!
-    var contentList = [UIColor]()
     
-    @IBOutlet weak var subListTableView: UITableView!
-    var subListContent = ["asd", "asfasf", "fasfasf"]
-    var isSelectedMode = false
     
-    @IBOutlet weak var bottomBarSub: UIView!
-    @IBOutlet weak var bottomBarMain: UIView!
-    @IBOutlet weak var HeaderView: UIView!
-    @IBOutlet weak var statusBarBgViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var statusBarBgView: UIView!
+    @IBOutlet weak var listContentTableview: AnimatedTableView!
+    var contentList = ["asd", "asfasf", "fasfasf"]
+    
+    var isAnimatedMode = false
+    
+    @IBOutlet weak var contentSceneBottomView: UIView!
+    @IBOutlet weak var titleSceneBottomView: UIView!
+    
+    @IBOutlet weak var titleSceneHeaderView: UIView!
+    
+    @IBOutlet weak var contentSceneHeaderBgViewHeightCon: NSLayoutConstraint!
+    @IBOutlet weak var contentSceneHeaderBgView: UIView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initializeTableView()
@@ -37,137 +45,133 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-    
-    //MARK: initialize methods
+    //MARK: Initialize Methods
     func initializeTableView(){
-        subListTableView.isHidden = true
-        subListTableView.register(UINib(nibName: "ListContentCell", bundle: nil), forCellReuseIdentifier: "SubListCell")
+        listContentTableview.isHidden = true
+        listContentTableview.register(UINib(nibName: "ListContentCell", bundle: nil), forCellReuseIdentifier: "SubListCell")
         
-        listTableView.register(UINib(nibName: "ListTitleCell", bundle: nil), forCellReuseIdentifier: cellReuseIdentifier)
+        listTitleTableView.register(UINib(nibName: "ListTitleCell", bundle: nil), forCellReuseIdentifier: cellReuseIdentifier)
         for _ in stride(from: 0, to: 30, by: 1) {
-            contentList.append(UIColor(red: random(), green: random(), blue: random(), alpha: 1.0))
+            titleList.append(UIColor(red: random(), green: random(), blue: random(), alpha: 1.0))
         }
     }
     
     //MARK: Supporting Methods
     func addSubListTableView(){
-        subListTableView.isHidden = false
-        subListContent = ["asd", "asfasf", "fasfasf"]
-        subListTableView.reloadData()
+        listContentTableview.isHidden = false
+        contentList = ["asd", "asfasf", "fasfasf"]
+        listContentTableview.reloadData()
     }
     
     func removeSubListTableView(){
-        subListTableView.isHidden = true
+        listContentTableview.isHidden = true
     }
     
     func random() -> CGFloat {
         return CGFloat(arc4random()) / CGFloat(UInt32.max)
     }
     
-    func animate(tag:Int) {
-        // bottom bar animation
-        self.bottomBarMain.isHidden = false
+    //MARK: Animation Methods
+    func animateViews() {
+        // bottom view animation
+        self.titleSceneBottomView.isHidden = false
         UIView.animate(withDuration: 0.50, animations: {() -> Void in
-            self.bottomBarMain.frame.origin.y = self.bottomBarMain.frame.origin.y + self.bottomBarMain.frame.height
+            self.titleSceneBottomView.frame.origin.y = self.titleSceneBottomView.frame.origin.y + self.titleSceneBottomView.frame.height
         }, completion:{(_ finished: Bool) -> Void in
-            self.bottomBarSub.frame.origin.y = self.bottomBarSub.frame.origin.y + self.bottomBarSub.frame.height
-            self.bottomBarSub.isHidden = false
-            self.bottomBarMain.isHidden = true
+            self.contentSceneBottomView.frame.origin.y = self.contentSceneBottomView.frame.origin.y + self.contentSceneBottomView.frame.height
+            self.contentSceneBottomView.isHidden = false
+            self.titleSceneBottomView.isHidden = true
             UIView.animate(withDuration: 0.50, animations: {() -> Void in
-                self.bottomBarSub.frame.origin.y = self.bottomBarSub.frame.origin.y - self.bottomBarSub.frame.height
+                self.contentSceneBottomView.frame.origin.y = self.contentSceneBottomView.frame.origin.y - self.contentSceneBottomView.frame.height
             })
         })
         
-        // status bar  bg animation
-        self.HeaderView.isHidden = true
-        self.statusBarBgViewHeight.constant = (self.statusBarBgView.superview?.frame.height)!
+        // header bg animation
+        self.titleSceneHeaderView.isHidden = true
+        self.contentSceneHeaderBgViewHeightCon.constant = (self.contentSceneHeaderBgView.superview?.frame.height)!
         UIView.animate(withDuration: 1.0, animations: {() -> Void in
             self.view.layoutIfNeeded()
             UIApplication.shared.statusBarStyle = .lightContent
             self.setNeedsStatusBarAppearanceUpdate()
         })
         
-        //tableview up animation
-        self.listTableViewTopCon.constant = 0
+        //title tableview move up animation
+        self.titleTableViewTopCon.constant = 0
         UIView.animate(withDuration: 1.0, animations: {() -> Void in
             self.view.layoutIfNeeded()
         })
-        
-        // cell aniamtion
-        let visibleCells = listTableView.visibleCells
-        for cell in visibleCells {
-            if cell.tag !=  tag{
-                UIView.animate(withDuration: 0.5, animations: {() -> Void in
-                    cell.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                    cell.alpha = 0
-                }, completion:{(_ finished: Bool) -> Void in
-                    cell.transform = CGAffineTransform(scaleX: 1, y: 1)
-                })
-            }else{
-                UIView.animate(withDuration: 0.7, delay: 0.3, options: [], animations: {() -> Void in
-                    self.selectedHeaderY = cell.frame.origin.y
-                    cell.frame.origin.y = cell.frame.origin.y - 1
-                    cell.frame.origin.y = self.listTableView.contentOffset.y
-                }, completion:{(_ finished: Bool) -> Void in
-                    self.addSubListTableView()
-                })
-            }
-        }
     }
     
-    //MARK: tableView methods
+    func getBackAnimatedViews() {
+        // bottom view back animation
+        UIView.animate(withDuration: 0.50, animations: {() -> Void in
+            self.contentSceneBottomView.frame.origin.y = self.contentSceneBottomView.frame.origin.y + self.contentSceneBottomView.frame.height
+        }, completion:{(_ finished: Bool) -> Void in
+            self.titleSceneBottomView.frame.origin.y = self.titleSceneBottomView.frame.origin.y + self.titleSceneBottomView.frame.height
+            self.contentSceneBottomView.isHidden = true
+            self.titleSceneBottomView.isHidden = false
+            UIView.animate(withDuration: 0.50, animations: {() -> Void in
+                self.titleSceneBottomView.frame.origin.y = self.titleSceneBottomView.frame.origin.y - self.titleSceneBottomView.frame.height
+            })
+        })
+        
+        // content tableview remove content
+        self.listContentTableview.removeCellsFadeAnimation(contentCount: contentList.count, completeionClosure: {
+            self.contentList.removeAll()
+            self.removeSubListTableView()
+            
+            // status view bg color back animation
+            self.contentSceneHeaderBgViewHeightCon.constant = 0
+            UIView.animate(withDuration: 1.0, animations: {() -> Void in
+                self.view.layoutIfNeeded()
+            }, completion:{(_ finished: Bool) -> Void in
+                UIApplication.shared.statusBarStyle = .default
+                self.setNeedsStatusBarAppearanceUpdate()
+                self.titleSceneHeaderView.isHidden = false
+            })
+            
+            // title tableview back to position animation
+            self.titleTableViewTopCon.constant = 20
+            UIView.animate(withDuration: 0.50, animations: {() -> Void in
+                self.view.layoutIfNeeded()
+            })
+            
+            // title tableview get back cells
+            self.listTitleTableView.returnTopCellAnimation(selectedIndex: self.selectedIndex, completeionClosure: {})
+        })
+    }
     
+    //MARK: TableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        if tableView == listTableView{
-            return self.contentList.count
+        if tableView == listTitleTableView{
+            return self.titleList.count
         }else{
-            return subListContent.count
+            return contentList.count
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if tableView == listTableView{
+        if tableView == listTitleTableView{
             let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath) as! ListTitleCell
-            cell.tag = indexPath.row
-            cell.selectionStyle = .none
-            cell.contentView.layer.borderColor = UIColor.black.cgColor
-            cell.contentView.layer.borderWidth = 1.0
-            cell.bgView.backgroundColor = contentList[indexPath.row]
+            cell.setupCell(at: indexPath, contentList: titleList)
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "SubListCell", for: indexPath) as! ListContentCell
-            cell.contentView.layer.borderColor = UIColor.black.cgColor
-            cell.contentView.layer.borderWidth = 1.0
-            cell.contentLabel.text = subListContent[indexPath.row]
+            cell.setupCell(at: indexPath, contentList:contentList)
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if (tableView == subListTableView) {
-            //animates the cell as it is being displayed for the first time
-            cell.transform = CGAffineTransform(translationX: 0, y: tableView.rowHeight/2)
-            cell.alpha = 0
-            
-            UIView.animate(withDuration: 0.5, delay: 0.05*Double(indexPath.row), options: [.curveEaseInOut], animations: {
-                cell.transform = CGAffineTransform(translationX: 0, y: 0)
-                cell.alpha = 1
-            }, completion: nil)
+        if (tableView == listContentTableview) {
+            if let cell = cell as? ListContentCell{
+                cell.animateCellInsert()
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        if tableView == listTableView{
+        if tableView == listTitleTableView{
             return 100
         }else{
             return 50
@@ -175,98 +179,29 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        isSelectedMode = true
-        selectedIndex = indexPath.row
-        animate(tag: selectedIndex)
+        if isAnimatedMode != true{
+            isAnimatedMode = true
+            selectedIndex = indexPath.row
+            animateViews()
+            if let currentTableview = tableView as? AnimatedTableView{
+                currentTableview.cellMoveTopAnimation(selectedIndex: indexPath.row, completeionClosure:{
+                    self.addSubListTableView()
+                })
+            }
+        }
     }
     
     //MARK: Button Clicks
-    
     @IBAction func backButtonClicked(_ sender: Any) {
-        isSelectedMode = false
-        
-        // bottom bar back animation
-        UIView.animate(withDuration: 0.50, animations: {() -> Void in
-            self.bottomBarSub.frame.origin.y = self.bottomBarSub.frame.origin.y + self.bottomBarSub.frame.height
-        }, completion:{(_ finished: Bool) -> Void in
-            self.bottomBarMain.frame.origin.y = self.bottomBarMain.frame.origin.y + self.bottomBarMain.frame.height
-            self.bottomBarSub.isHidden = true
-            self.bottomBarMain.isHidden = false
-            UIView.animate(withDuration: 0.50, animations: {() -> Void in
-                self.bottomBarMain.frame.origin.y = self.bottomBarMain.frame.origin.y - self.bottomBarMain.frame.height
-            })
-        })
-        
-        // status bar bg color back animation
-        self.statusBarBgViewHeight.constant = 0
-        UIView.animate(withDuration: 1.0, animations: {() -> Void in
-            self.view.layoutIfNeeded()
-        }, completion:{(_ finished: Bool) -> Void in
-            UIApplication.shared.statusBarStyle = .default
-            self.setNeedsStatusBarAppearanceUpdate()
-            self.HeaderView.isHidden = false
-        })
-        
-        // tableview back to position animation
-        self.listTableViewTopCon.constant = 20
-        UIView.animate(withDuration: 2.0, animations: {() -> Void in
-            self.view.layoutIfNeeded()
-        })
-        
-        //remove sublist tableview animation
-        var i = 0.0
-        for index in stride(from: (subListContent.count-1), through: 0, by: -1){
-            let indexPath = IndexPath(row:index, section:0)
-            
-            if let cell = subListTableView.cellForRow(at: indexPath){
-                UIView.animate(withDuration: 0.5, delay: 0.05*i, options: [.curveEaseInOut], animations: {
-                    cell.frame.origin.y = (cell.frame.origin.y - cell.frame.height/2)
-                    cell.alpha = 0
-                }, completion:{(_ finished: Bool) -> Void in
-                    self.subListContent.remove(at: index)
-                    if self.subListContent.count == 0{
-                        self.removeSubListTableView()
-                        self.cellBackToPosition()
-                    }
-                })
-                i = i + 1.0
-            }
-        }
-        
+        isAnimatedMode = false
+        getBackAnimatedViews()
     }
     
-    func cellBackToPosition(){
-        let visibleCells = listTableView.visibleCells
-        for cell in visibleCells {
-            if cell.tag !=  selectedIndex{
-                cell.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                UIView.animate(withDuration: 0.5, delay: 0.7, options: [], animations: {() -> Void in
-                    cell.transform = CGAffineTransform(scaleX: 1, y: 1)
-                    cell.alpha = 1
-                })
-            }else{
-                UIView.animate(withDuration: 0.7, animations: {() -> Void in
-                    cell.frame.origin.y  = self.selectedHeaderY
-                })
-            }
-        }
-    }
-    
+    //MARK: Rotation Dectect Method
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation){
-        if isSelectedMode{
-            let visibleCells = listTableView.visibleCells
-            if selectedIndex >= 0{
-                for cell in visibleCells {
-                    if cell.tag !=  selectedIndex{
-                        cell.alpha = 0
-                    }else{
-                        self.selectedHeaderY = cell.frame.origin.y
-                        cell.frame.origin.y = self.listTableView.contentOffset.y
-                    }
-                }
-            }
+        if isAnimatedMode{
+            listTitleTableView.rotationHandlerForMoveTopAnimation(selectedIndex: selectedIndex)
         }
     }
-        
 }
 

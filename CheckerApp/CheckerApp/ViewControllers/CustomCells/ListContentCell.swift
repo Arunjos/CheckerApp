@@ -29,4 +29,19 @@ class ListContentCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setupCell(at indexPath:IndexPath, contentList:[String]){
+        self.contentView.layer.borderColor = UIColor.black.cgColor
+        self.contentView.layer.borderWidth = 1.0
+        self.contentLabel.text = contentList[indexPath.row]
+    }
+    
+    func animateCellInsert(){
+        self.transform = CGAffineTransform(translationX: 0, y: -5)
+        self.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.05*Double(self.tag), options: [.curveEaseInOut], animations: {
+            self.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.alpha = 1
+        }, completion: nil)
+    }
+    
 }

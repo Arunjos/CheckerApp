@@ -52,7 +52,7 @@
                                     <constraint firstItem="mv3-Sa-MU2" firstAttribute="top" secondItem="O2P-wG-NSN" secondAttribute="top" constant="30" id="vNd-lh-zxn"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4bM-Eh-SPT">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4bM-Eh-SPT" customClass="AnimatedTableView" customModule="CheckerApp" customModuleProvider="target">
                                 <rect key="frame" x="15" y="90" width="345" height="567"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -60,7 +60,7 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="D7e-Wb-KYc"/>
                                 </connections>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gi4-bL-gtG">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Gi4-bL-gtG" customClass="AnimatedTableView" customModule="CheckerApp" customModuleProvider="target">
                                 <rect key="frame" x="15" y="190" width="345" height="467"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -116,14 +116,14 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="HeaderView" destination="xuT-7s-AxZ" id="P93-GM-OvT"/>
-                        <outlet property="bottomBarMain" destination="Tfg-4m-lqm" id="yzk-Zg-OLB"/>
-                        <outlet property="bottomBarSub" destination="G4O-03-Z2c" id="y8w-eE-Vtc"/>
-                        <outlet property="listTableView" destination="4bM-Eh-SPT" id="tWb-OY-Ajw"/>
-                        <outlet property="listTableViewTopCon" destination="69e-PH-EcJ" id="8F2-Ne-KAg"/>
-                        <outlet property="statusBarBgView" destination="8BL-5y-Mzb" id="igM-mN-1jl"/>
-                        <outlet property="statusBarBgViewHeight" destination="oIx-vZ-2lL" id="bjL-Hv-D9s"/>
-                        <outlet property="subListTableView" destination="Gi4-bL-gtG" id="Ufs-Va-gDL"/>
+                        <outlet property="contentSceneBottomView" destination="G4O-03-Z2c" id="y8w-eE-Vtc"/>
+                        <outlet property="contentSceneHeaderBgView" destination="8BL-5y-Mzb" id="igM-mN-1jl"/>
+                        <outlet property="contentSceneHeaderBgViewHeightCon" destination="oIx-vZ-2lL" id="bjL-Hv-D9s"/>
+                        <outlet property="listContentTableview" destination="Gi4-bL-gtG" id="lCG-mT-j0e"/>
+                        <outlet property="listTitleTableView" destination="4bM-Eh-SPT" id="Q2Q-SI-S4c"/>
+                        <outlet property="titleSceneBottomView" destination="Tfg-4m-lqm" id="yzk-Zg-OLB"/>
+                        <outlet property="titleSceneHeaderView" destination="xuT-7s-AxZ" id="P93-GM-OvT"/>
+                        <outlet property="titleTableViewTopCon" destination="69e-PH-EcJ" id="8F2-Ne-KAg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
