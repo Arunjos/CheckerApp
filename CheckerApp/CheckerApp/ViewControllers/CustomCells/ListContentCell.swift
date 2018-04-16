@@ -30,9 +30,9 @@ class ListContentCell: UITableViewCell {
     }
     
     func setupCell(at indexPath:IndexPath, contentList:[String]){
-        self.contentView.layer.borderColor = UIColor.black.cgColor
-        self.contentView.layer.borderWidth = 1.0
-        self.contentLabel.text = contentList[indexPath.row]
+//        self.contentView.layer.borderColor = UIColor.black.cgColor
+//        self.contentView.layer.borderWidth = 1.0
+//        self.contentLabel.text = contentList[indexPath.row]
     }
     
     func animateCellInsert(){

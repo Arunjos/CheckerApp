@@ -21,7 +21,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     @IBOutlet weak var listContentTableview: AnimatedTableView!
-    var contentList = ["asd", "asfasf", "fasfasf"]
+    var contentList = ["1", "2", "3"]
     
     var isAnimatedMode = false
     
@@ -51,24 +51,19 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         listContentTableview.register(UINib(nibName: "ListContentCell", bundle: nil), forCellReuseIdentifier: "SubListCell")
         
         listTitleTableView.register(UINib(nibName: "ListTitleCell", bundle: nil), forCellReuseIdentifier: cellReuseIdentifier)
-        for _ in stride(from: 0, to: 30, by: 1) {
-            titleList.append(UIColor(red: random(), green: random(), blue: random(), alpha: 1.0))
-        }
+        
+        self.contentSceneBottomView.isHidden = true
     }
     
     //MARK: Supporting Methods
     func addSubListTableView(){
         listContentTableview.isHidden = false
-        contentList = ["asd", "asfasf", "fasfasf"]
+        contentList = ["1", "2", "3"]
         listContentTableview.reloadData()
     }
     
     func removeSubListTableView(){
         listContentTableview.isHidden = true
-    }
-    
-    func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
     }
     
     //MARK: Animation Methods
@@ -144,7 +139,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: TableView Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         if tableView == listTitleTableView{
-            return self.titleList.count
+            return 30 //self.titleList.count //now default set
         }else{
             return contentList.count
         }
@@ -172,9 +167,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         if tableView == listTitleTableView{
-            return 100
+            return CGFloat(Constants.TITLE_TABLE_VIEW.ROW_HEIGHT)
         }else{
-            return 50
+            return CGFloat(Constants.CONTENT_TABLE_VIEW.ROW_HEIGHT)
         }
     }
     

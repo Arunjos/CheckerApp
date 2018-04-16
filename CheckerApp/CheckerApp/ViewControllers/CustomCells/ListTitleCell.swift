@@ -32,9 +32,14 @@ class ListTitleCell: UITableViewCell {
     func setupCell(at indexPath:IndexPath, contentList:[UIColor]){
         self.tag = indexPath.row
         self.selectionStyle = .none
-        self.contentView.layer.borderColor = UIColor.black.cgColor
-        self.contentView.layer.borderWidth = 1.0
-        self.bgView.backgroundColor = contentList[indexPath.row]
+        
+        self.bgView.layer.cornerRadius = 10
+        let shadowPath = UIBezierPath(rect: self.bounds)
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOffset = CGSize(width: CGFloat(1.0), height: CGFloat(3.0))
+        self.layer.shadowOpacity = 0.5
+        self.bgView.layer.shadowPath = shadowPath.cgPath
     }
     
 }
